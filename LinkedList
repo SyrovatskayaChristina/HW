@@ -1,0 +1,318 @@
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Homework2.Tests
+{
+
+    public class Node
+    {
+        public Node(int val)
+        {
+            Val = val;
+        }
+        public int Val { get; set; }
+        public Node Next { get; set; }
+    }
+
+
+    public class LinkedList
+    {
+        public Node head; // головной/первый элемент
+        public Node tail; // последний/хвостовой элемент
+        int count;  // количество элементов в списке
+
+        public LinkedList(int[] values)
+        {
+            for (int i = 0; i < values.Length; i++)
+            {
+                AddLast(values[i]);
+            }
+        }
+
+
+        public LinkedList()
+        {
+
+        }
+
+        public void AddFirst(int val) // добавление в начало списка
+        {
+            Node node = new Node(val);
+            node.Next = head;
+            head = node;
+            if (count == 0)
+                tail = head;
+            count++;
+        }
+
+        public void AddFirstM(int[] vals)// добавление массива в начало списка
+        {
+            Node node = new Node(vals[0]);
+            Node newHead = node;
+            for (int i = 1; i < vals.Length; i++)
+            {
+                node.Next = new Node(vals[i]);
+                node = node.Next;
+            }
+
+            node.Next = head;
+            head = newHead;
+            count += vals.Length;
+        }
+
+        public void AddLastM(int[] vals)// добавление массива в конец списка
+        {
+            Node node = tail;
+            for (int i = 0; i < vals.Length; i++)
+            {
+                Node cur = new Node(vals[i]);
+                node.Next = cur;
+                node = node.Next;
+                count++;
+            }
+
+        }
+
+        public void AddLast(int val) // добавление в конец списка
+        {
+            Node node = new Node(val);
+            if (head == null)
+            {
+                head = node;
+            }
+            else
+            {
+                tail.Next = node;
+            }
+            tail = node;
+            count++;
+        }
+
+
+
+        public void AddAt(int idx, int val)//вставка по указанному индексу
+        {
+            Node tmp = head;
+
+            for (int i = 0; i <= idx - 1; i++)
+            {
+                tmp = tmp.Next;
+
+            }
+            Node node = new Node(val);
+            node.Next = tmp.Next;
+            tmp.Next = node;
+            count++;
+        }
+
+        public void AddAt2(int idx, int[] vals)//вставка по указанному индексу
+        {
+            Node cur = head;
+
+            Node node = new Node(vals[0]);
+            Node firstNewNode = node;
+            for (int j = 1; j < vals.Length; j++)
+            {
+                node.Next = new Node(vals[j]);
+                node = node.Next;
+            }
+            Node lastNewNode = node;
+
+            for (int i = 0; i < idx - 1; i++)
+            {
+                cur = cur.Next;
+            }
+
+            Node temp = cur.Next;
+            cur.Next = firstNewNode;
+            lastNewNode.Next = temp;
+
+            count += vals.Length;
+        }
+
+
+        public int GetSize()//узнать кол-во элементов в списке
+        {
+            return count;
+        }
+
+        
+        public bool Contains(int val) // проверка, есть ли элемент в списке
+        {
+            Node current = head;
+            while (current != null)
+            {
+                if (current.Val.Equals(val))
+                {
+                    return true;
+                }
+                current = current.Next;
+            }
+            return false;
+        }
+
+        public int GetByIndex(int idx)
+        {
+            return -1;
+        }
+
+        public int[] ToArray() // преобразовать список в массив
+        {
+            int size = 0;
+            Node current = head;
+            int[] arr = new int[count];
+
+            while (current != null)
+            {
+                arr[size] = current.Val;
+                current = current.Next;
+                size++;
+            }
+
+            return arr;
+        }
+
+        public void Set(int idx, int val) //поменять значение элемента с указанным индексом
+        {
+
+            Node tmp = head;
+            if (tmp != null)
+            {
+                for (int i = 0; i <= idx - 1; i++)
+                {
+                    tmp = tmp.Next;
+                }
+                tmp.Val = val;
+            }
+
+        }
+
+        public void Reverse() //изменение порядка элементов списка на обратный
+        {
+            Node tmp = head;
+            Node cur;
+            while (tmp.Next != null)
+            {
+                cur = tmp.Next;
+                tmp.Next = tmp.Next.Next;
+                cur.Next = head;
+                head = cur;
+            }
+
+
+        }
+
+        public void RemoveAt(int idx) // удаление по индексу
+        {
+            if (idx == 0)
+            {
+                head = head.Next;
+            }
+            else
+            {
+                Node prev = head;
+                for (int i = 0; i < idx - 1; i++)
+                {
+                    prev = prev.Next;
+                }
+                prev.Next = prev.Next.Next;
+                count--;
+            }
+        }
+
+        public void RemoveFirst()
+        {
+            Node current = head;
+            if (head != null)
+            {
+                head = current.Next;
+            }
+            count--;
+        }
+
+        public void RemoveLast()
+        {
+            Node current = head;
+            while (head != null)
+            {
+                if (current.Next.Next == null)
+                {
+                    current.Next = tail;
+                }
+                count--;
+            }
+        }
+
+        public void RemoveAll(int val) //удалить все элементы, равные val
+        {
+            if (head.Val.Equals(val))
+            {
+                head = head.Next;
+                count--;
+            }
+            Node current = head.Next;
+            Node previous = head;
+            while (current != null)
+            {
+                if (current.Val.Equals(val))
+                {
+                    previous.Next = current.Next;
+                    count--;
+                }
+            }
+        }
+
+        //IndexOf(int val) - вернёт индекс первого найденного элемента, 
+        //равного val(или -1, если элементов с таким значением в списке нет)
+        public int IndexOf(int val)
+        {
+            Node current = head;
+            int index = 0;
+            for (int i = 0; i < count - 1; i++)
+            {
+
+                if (current.Val.Equals(val))
+                {
+                    index = i;
+                    return index;
+                }
+                current = current.Next;
+            }
+            return -1;
+        }
+
+
+        public int GetFirst() // вернёт значение первого элемента списка
+        {
+            if (head != null)
+            {
+                return head.Val;
+            }
+            return -1;
+        }
+
+        public int GetLast() // вернёт значение последнего элемента списка
+        {
+            if (tail.Next == null)
+            {
+                return tail.Val;
+            }
+            return -1;
+        }
+
+        public int Get(int idx) // вернёт значение элемента списка c указанным индексом
+        {
+            Node current = head;
+            int[] arr = new int[count];
+
+            for (int i = 0; i < idx; i++)
+            {
+                current = current.Next;
+            }
+
+            return current.Val;
+        }
+    }
+}
