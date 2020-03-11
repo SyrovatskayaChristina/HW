@@ -1,0 +1,293 @@
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace HomeWork
+{
+	public class DoublyNode
+	{
+		public DoublyNode(int val)
+		{
+			Val = val;
+		}
+		public int Val { get; set; }
+		public DoublyNode Previous { get; set; }
+		public DoublyNode Next { get; set; }
+
+	}
+
+	public class LinkedList2
+	{
+		public DoublyNode head; // головной/первый элемент
+		public DoublyNode tail; // последний/хвостовой элемент
+		int count;  // количество элементов в списке
+
+		public LinkedList2(int[] values)
+		{
+			for (int i = 0; i < values.Length; i++)
+			{
+				AddLast(values[i]);
+			}
+		}
+
+		public void AddLast(int val)
+		{
+			DoublyNode node = new DoublyNode(val);
+			if (head == null)
+				head = node;
+			else
+			{
+				tail.Next = node;
+				node.Previous = tail;
+			}
+			tail = node;
+			count++;
+		}
+		public void AddLast2(int[] vals)
+		{
+			for (int i = 0; i < vals.Length; i++)
+			{
+				DoublyNode node = new DoublyNode(vals[i]);
+				tail.Next = node;
+				node.Previous = tail;
+				tail = node;
+			}
+			count += vals.Length;
+		}
+
+
+		public void AddFirst(int val)
+		{
+			DoublyNode node = new DoublyNode(val);
+			node.Next = head;
+			head = node;
+			if (count == 0)
+				tail = head;
+			else
+				head.Previous = node;
+			count++;
+		}
+
+		public void AddFirst2(int[] vals)
+		{
+			DoublyNode node = new DoublyNode(vals[0]);
+			DoublyNode newHead = node;
+			for (int i = 1; i < vals.Length; i++)
+			{
+				node.Next = new DoublyNode(vals[i]);
+				node = node.Next;
+			}
+			node.Next = head;
+			head = node;
+
+			head.Previous = newHead;
+			head = newHead;
+			count += vals.Length;
+		}
+
+		public void AddAt(int idx, int val)
+		{
+			DoublyNode tmp = head;
+			int index = 0;
+			DoublyNode node = new DoublyNode(val);
+			DoublyNode cur;
+			while (index != idx)
+			{
+				tmp = tmp.Next;
+				index++;
+			}
+			cur = tmp;
+			node.Previous = cur.Previous;
+			tmp.Previous.Next = node;
+			node.Next = tmp;
+			tmp.Previous = node;
+			count++;
+		}
+
+
+		public void AddAtArr(int idx, int[] vals)
+		{
+			for (int i = 0; i < vals.Length; i++)
+			{
+				AddAt(idx, vals[i]);
+				idx++;
+			}
+		}
+
+
+		public void RemoveFirst()
+		{
+			DoublyNode node = head;
+			if (head != null)
+			{
+				head = node.Next;
+			}
+			count--;
+		}
+
+		public void RemoveLast()
+		{
+			DoublyNode node = tail;
+
+			if (node.Next == null)
+			{
+				tail.Previous.Next = tail.Next;
+				tail = tail.Previous;
+			}
+			count--;
+		}
+
+
+		public void RemoveAt(int idx)
+		{
+			DoublyNode node = head;
+			int index = 0;
+			while (index < idx)
+			{
+				node = node.Next;
+				index++;
+			}
+			node.Previous.Next = node.Next;
+			count--;
+		}
+		public void RemoveAll(int val)
+		{
+			DoublyNode node = head;
+			while (node != null)
+			{
+				if (node.Val.Equals(val))
+				{
+					node.Previous.Next = node.Next;
+					count--;
+				}
+				node = node.Next;
+			}
+
+		}
+
+		public int GetSize()
+		{
+			return count;
+		}
+		public int Get(int idx)
+		{
+			DoublyNode current = head;
+			int[] arr = new int[count];
+
+			for (int i = 0; i < idx; i++)
+			{
+				current = current.Next;
+			}
+
+			return current.Val;
+		}
+
+		public int GetFirst()
+		{
+			if (head != null)
+			{
+				return head.Val;
+			}
+			return -1;
+		}
+
+		public int GetLast()
+		{
+			if (tail.Next == null)
+			{
+				return tail.Val;
+			}
+			return -1;
+		}
+
+		public void Reverse()
+		{
+			DoublyNode Node = head;
+			DoublyNode newTail = tail;
+			DoublyNode secondNode = newTail;
+
+			int tmpVal;
+
+			for (int i = 0; i < count / 2; i++)
+			{
+				tmpVal = Node.Val;
+				Node.Val = secondNode.Val;
+				secondNode.Val = tmpVal;
+				Node = Node.Next;
+				secondNode = secondNode.Previous;
+			}
+
+		}
+
+		public void Set(int idx, int val)
+		{
+
+			DoublyNode tmp = head;
+			if (tmp != null)
+			{
+				for (int i = 0; i <= idx - 1; i++)
+				{
+					tmp = tmp.Next;
+				}
+				tmp.Val = val;
+			}
+
+		}
+
+		public bool Contains(int val)
+		{
+			DoublyNode current = head;
+			while (current != null)
+			{
+				if (current.Val.Equals(val))
+				{
+					return true;
+				}
+				current = current.Next;
+			}
+			return false;
+		}
+
+
+
+		public int[] ToArray()
+		{
+			int size = 0;
+			int[] arr = new int[count];
+
+			while (head != null)
+			{
+				arr[size] = head.Val;
+				head = head.Next;
+				size++;
+			}
+
+			return arr;
+		}
+		//IndexOf(int val) - вернёт индекс первого найденного элемента, 
+		//равного val(или -1, если элементов с таким значением в списке нет)
+		public int IndexOf(int val)
+		{
+			DoublyNode current = head;
+			int index = 0;
+			for (int i = 0; i < count - 1; i++)
+			{
+
+				if (current.Val.Equals(val))
+				{
+					index = i;
+					return index;
+				}
+				current = current.Next;
+			}
+			return -1;
+		}
+
+
+
+
+	}
+
+}
+
