@@ -1,0 +1,115 @@
+using NUnit.Framework;
+namespace Homework.Tests
+{
+    [TestFixture]
+    public class ArrayListTest
+    {
+        [TestCase(3, new int[] { 1, 5, 4, 3 })]
+        public void AddTest(int val, int[] expected)
+        {
+            ArrayList alist = new ArrayList(new int[] { 1, 5, 4 });
+            alist.Add(val);
+            int[] actual = alist.ToArray();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestCase(2, 1, new int[] { 1, 5, 1, 4 })]
+        public void AddOnIndexTest(int idx, int val, int[] expected)
+        {
+            ArrayList alist = new ArrayList(new int[] { 1, 5, 4 });
+            alist.AddOnIndex(idx, val);
+            int[] actual = alist.ToArray();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestCase(2, 1, new int[] { 1, 5, 1 })]
+        public void SetTest(int idx, int val, int[] expected)
+        {
+            ArrayList alist = new ArrayList(new int[] { 1, 5, 4 });
+            alist.Set(idx, val);
+            int[] actual = alist.ToArray();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestCase(1, 5)]
+        public void GetTest(int index, int expected)
+        {
+            ArrayList alist = new ArrayList(new int[] { 1, 5, 4, 7, 8, 5, 6, 5, 4, 1 });
+            int actual = alist.Get(index);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestCase(8, true)]
+        public void ContainsTest(int val, bool expected)
+        {
+            ArrayList alist = new ArrayList(new int[] { 1, 5, 4, 7, 8, 5, 6, 5, 4, 1 });
+            bool actual = alist.Contains(val);
+            Assert.AreEqual(expected, actual);
+
+        }
+
+        [TestCase(10)]
+        public void SizeTest(int expected)
+        {
+            ArrayList alist = new ArrayList(new int[] { 1, 5, 4, 7, 8, 5, 6, 5, 4, 1 });
+            int actual = alist.Size();
+            Assert.AreEqual(expected, actual);
+        }
+
+
+        [TestCase(1, new int[] { 8, 11 },new int[] { 1, 8, 11, 5, 4, 7 })]
+        public void AddAllOnIndexTest(int idx, int[] vals, int []expected)
+        {
+            ArrayList alist = new ArrayList(new int[] { 1, 5, 4, 7});
+            alist.AddAllOnIndex(idx,vals);
+            int[] actual = alist.ToArray();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestCase(new int[] { 4, 7 }, new int[] { 1, 5, 4, 4, 7 })]
+        public void AddAllTest(int[] vals, int[] expected)
+        {
+            ArrayList alist = new ArrayList(new int[] { 1, 5, 4 });
+            alist.AddAll(vals);
+            Assert.AreEqual(expected, alist.GetValues());
+        }
+
+        [TestCase(5,1) ]
+        public void IndexOfTest (int desiredVal, int expected)
+        {
+            ArrayList alist = new ArrayList(new int[] { 1, 5, 4, 7 });
+            int actual = alist.IndexOf(desiredVal);
+            Assert.AreEqual(expected, actual);
+        }
+
+
+        [TestCase(5, new int[] { 1, 4, 7 })]
+        public void RemoveTest(int val, int[] expected)
+        {
+            ArrayList alist = new ArrayList(new int[] { 1, 5, 4, 7 });
+            alist.Remove(val);
+            int[] actual = alist.ToArray();
+            Assert.AreEqual(expected, actual);
+        }
+
+
+        [TestCase(1, new int[] { 1, 4, 7 })]
+        public void RemoveOnIndexTest(int idx, int[] expected)
+        {
+            ArrayList alist = new ArrayList(new int[] { 1, 5, 4, 7 });
+            alist.RemoveOnIndex(idx);
+            int[] actual = alist.ToArray();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestCase(7, new int[] { 2,5,9 })]
+        public void RemoveAllTest(int val, int[] expected)
+        {
+            ArrayList alist = new ArrayList(new int[] { 7,2,5,7,9,7});
+            alist.RemoveAll(val);
+            int[] actual = alist.ToArray();
+            Assert.AreEqual(expected, actual);
+        }
+    }
+}
+
