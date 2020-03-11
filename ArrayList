@@ -1,0 +1,232 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+
+namespace Homework
+{
+	public class ArrayList
+	{
+		private int[] array;
+		private int realLength;
+
+		public ArrayList()
+		{
+			array = new int[10];
+			realLength = 0;
+		}
+
+		public ArrayList(int[] array)
+		{
+			this.array = array;
+			realLength = array.Length;
+
+		}
+		public int[] ToArray()
+		{
+			int[] temp = new int[realLength];
+			for (int i = 0; i < realLength; i++)
+			{
+				temp[i] = array[i];
+			}
+			return temp;
+
+		}
+
+		public int[] IncreaseSize()
+		{
+			int[] NewLength = new int[(array.Length * 3 / 2) + 1];
+			for (int i = 0; i < realLength; i++)
+			{
+				NewLength[i] = array[i];
+			}
+			return NewLength;
+		}
+
+		public void Add(int val)
+		{
+
+			if (realLength == array.Length)
+			{
+				array = IncreaseSize();
+
+				array[realLength] = val;
+				realLength++;
+			}
+		}
+
+		public void AddOnIndex(int idx, int val)// со сдвигом
+		{
+			if (realLength == array.Length)
+			{
+				array = IncreaseSize();
+			}
+			for (int i = realLength; i >= idx; i--)
+			{
+				array[i + 1] = array[i];
+			}
+			array[idx] = val;
+			realLength++;
+		}
+
+
+		public void Set(int idx, int val)
+		{
+			if (realLength == array.Length)
+			{
+				array = IncreaseSize();
+			}
+			array[idx] = val;
+		}
+
+
+		public int Get(int index)
+		{
+			return array[index];
+		}
+
+
+		public bool Contains(int val)
+		{
+			for (int i = 0; i < array.Length; i++)
+			{
+				if (array[i] == val)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+
+		public int Size()
+		{
+			return realLength;
+		}
+
+		public void AddAll(int[] vals)
+		{
+
+			if (realLength + vals.Length >= array.Length)
+			{
+				array = IncreaseSize();
+			}
+			for (int i = 0; i < vals.Length; i++)
+			{
+				array[realLength + i] = vals[i];
+			}
+			realLength += vals.Length;
+		}
+
+		public void AddAllOnIndex(int idx, int[] vals)
+		{
+			if (vals.Length >= array.Length - realLength)
+			{
+				array = IncreaseSize();
+			}
+
+
+			for (int i = realLength; i >= idx; i--)
+			{
+				array[i + vals.Length] = array[i];
+			}
+			int count = 0;
+			for (int i = 0; i < vals.Length; i++)
+			{
+				array[idx + count] = vals[i];
+				count++;
+				realLength++;
+			}
+		}
+
+
+		public int IndexOf(int desiredVal)
+		{
+			int index = 0;
+			for (int i = 0; i < array.Length; i++)
+			{
+
+				if (desiredVal == array[i])
+				{
+					index = i;
+				}
+
+			}
+			return index;
+		}
+
+
+
+		public void Remove(int val)   //удалить первый элемент с вход. значением
+		{
+			int[] arr = new int[realLength - 1];
+
+			for (int i = 0; i < realLength; i++)
+			{
+				if (array[i] == val)
+				{
+					for (int j = i; j < realLength; j++)
+					{
+						if (j == array.Length - 1)
+						{
+							array[j] = 0;
+							realLength--;
+							return;
+						}
+						array[j] = array[j + 1];
+					}
+					realLength--;
+					return;
+				}
+			}
+			array = arr;
+		}
+
+		public void RemoveOnIndex(int idx)//удалить элемент по индексу со сдвигом
+		{
+			int[] arr = new int[realLength - 1];
+
+			for (int i = 0; i < realLength; i++)
+			{
+				if (i < idx)
+				{
+					arr[i] = array[i];
+				}
+				else if (i > idx)
+				{
+					arr[i - 1] = array[i];
+				}
+			}
+			array = arr;
+			realLength--;
+		}
+
+		public void RemoveAll(int val)//удалить все элемент с вход. значением
+		{
+			int count = 0;
+			int[] arr = new int[realLength];
+			for (int i = 0; i <array.Length; i++)
+			{
+				if (array[i] == val)
+				{
+					count++;
+					continue;
+				}
+				arr[i-count] = array[i];
+				realLength--;
+			}
+			array=arr;
+		}
+
+		
+
+		public int[] GetValues()
+		{
+			int[] newArr = new int[realLength];
+			for (int i = 0; i < realLength; i++)
+			{
+				newArr[i] = array[i];
+			}
+			return newArr;
+		}
+
